@@ -375,6 +375,37 @@
       text-decoration: none;
     }
     .nav-listen:hover { border-color: var(--cool); }
+
+    .like-btn {
+      display: inline-block;
+      margin-top: 22px;
+      padding: 14px 22px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--deep);
+      background: var(--brass);
+      border: 1px solid var(--brass);
+      text-decoration: none;
+      transition: background 160ms ease, color 160ms ease;
+    }
+    .like-btn:hover {
+      background: transparent;
+      color: var(--brass);
+      border-bottom: 1px solid var(--brass);
+    }
+    .like-hint {
+      margin: 10px 0 0;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      max-width: 28em;
+    }
+    .like-block { text-align: center; margin: 28px 0 8px; }
+    .like-block.left { text-align: left; }
+    .like-block.left .like-hint { max-width: none; }
   </style>
 </head>
 <body>
@@ -391,6 +422,8 @@
     <hr class="gold-line" />
     <p class="label">Ein Album-Dokument · hörbar</p>
     <p style="margin: 10px 0 0;">NilsP</p>
+    <a class="like-btn" href="https://suno.com/album/08977bc9-f3ff-48ae-a48f-556f2e62fabf" target="_blank" rel="noopener">Auf Suno liken</a>
+    <p class="like-hint">Öffnet das Album — dort kannst du dem Track ein Like geben.</p>
     <p class="footer-meta" style="position:absolute;bottom:36px;">2026 · LilyPond · Suno V6</p>
   </header>
 
@@ -406,7 +439,7 @@
         <dt class="label">Score</dt><dd>Fugue in D Minor · Solo-Klavier</dd>
         <dt class="label">Systemautor</dt><dd>NilsP</dd>
         <dt class="label">Sound</dt><dd>Suno V6</dd>
-        <dt class="label">Album</dt><dd><a href="https://suno.com/album/08977bc9-f3ff-48ae-a48f-556f2e62fabf" target="_blank" rel="noopener">suno.com/album/…08977bc9</a></dd>
+        <dt class="label">Album</dt><dd><a href="https://suno.com/album/08977bc9-f3ff-48ae-a48f-556f2e62fabf" target="_blank" rel="noopener">Auf Suno liken</a></dd>
         <dt class="label">Profil</dt><dd><a href="https://suno.com/@cwzjtpwwwy" target="_blank" rel="noopener">suno.com/@cwzjtpwwwy</a></dd>
       </dl>
 
@@ -557,9 +590,12 @@ Ansonsten jede künstlerische Freiheit.</div>
       <dl class="meta">
         <dt class="label">Credits</dt><dd>NilsP</dd>
         <dt class="label">Profil</dt><dd><a href="https://suno.com/@cwzjtpwwwy" target="_blank" rel="noopener">@cwzjtpwwwy</a></dd>
-        <dt class="label">Album</dt><dd><a href="https://suno.com/album/08977bc9-f3ff-48ae-a48f-556f2e62fabf" target="_blank" rel="noopener">Horn and Reed Fugue auf Suno</a></dd>
         <dt class="label">Pfad</dt><dd>Score → Sound → Bigband</dd>
       </dl>
+      <div class="like-block left">
+        <a class="like-btn" href="https://suno.com/album/08977bc9-f3ff-48ae-a48f-556f2e62fabf" target="_blank" rel="noopener">Auf Suno liken</a>
+        <p class="like-hint">Gefällt dir das Finale? Like auf der Album-Seite bei Suno setzen.</p>
+      </div>
 
       <h3>Drei Hörstufen</h3>
       <table class="levels">
@@ -585,9 +621,12 @@ Ansonsten jede künstlerische Freiheit.</div>
         <dt class="label">Score-Engine</dt><dd>LilyPond 2.26 · FluidSynth · ffmpeg</dd>
         <dt class="label">Sound-Engine</dt><dd>Suno V6</dd>
         <dt class="label">Profil</dt><dd><a href="https://suno.com/@cwzjtpwwwy" target="_blank" rel="noopener">suno.com/@cwzjtpwwwy</a></dd>
-        <dt class="label">Album</dt><dd><a href="https://suno.com/album/08977bc9-f3ff-48ae-a48f-556f2e62fabf" target="_blank" rel="noopener">suno.com/album/08977bc9-…</a></dd>
         <dt class="label">Druck-PDF</dt><dd><a href="horn-and-reed-fugue.pdf">horn-and-reed-fugue.pdf</a></dd>
       </dl>
+      <div class="like-block">
+        <a class="like-btn" href="https://suno.com/album/08977bc9-f3ff-48ae-a48f-556f2e62fabf" target="_blank" rel="noopener">Auf Suno liken</a>
+        <p class="like-hint">Album öffnen und dem Track ein Like geben.</p>
+      </div>
 
       <div class="colophon">
         <hr class="gold-line" />
