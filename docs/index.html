@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Horn and Reed Fugue — Score → Sound → Ensemble</title>
+  <meta name="author" content="NilsP" />
+  <style>
+    :root {
+      --ink: #EDE6DC;
+      --muted: #8E8790;
+      --slate: #1C181F;
+      --deep: #0B090C;
+      --rule: #2E2832;
+      --cool: #9AA8B5;
+      --brass: #C4A06A;
+      --paper: #110E14;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--deep);
+      color: var(--ink);
+      font-family: Didot, Baskerville, Georgia, "Times New Roman", serif;
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    a { color: var(--brass); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--brass) 40%, transparent); }
+    a:hover { border-bottom-color: var(--brass); }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 56px 28px 80px;
+    }
+
+    .cover {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      padding: 64px 28px;
+      background: var(--deep);
+    }
+    .floors {
+      position: absolute;
+      left: 28px;
+      top: 18%;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .floors span {
+      display: block;
+      width: 9px;
+      height: 52px;
+      background: color-mix(in srgb, var(--cool) 55%, #000);
+    }
+    .floors span:nth-child(n+6) {
+      background: color-mix(in srgb, var(--brass) 55%, #000);
+    }
+
+    .eyebrow, .label, .footer-meta, .player-time {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    h1 {
+      font-size: clamp(2.6rem, 7vw, 3.6rem);
+      font-weight: 400;
+      margin: 18px 0 12px;
+      letter-spacing: 0.02em;
+    }
+    h2 {
+      font-size: 1.85rem;
+      font-weight: 400;
+      margin: 0 0 10px;
+    }
+    h3 {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cool);
+      font-weight: 500;
+      margin: 36px 0 12px;
+    }
+
+    .subtitle { color: var(--muted); font-size: 1.05rem; margin: 0; }
+    .rule {
+      width: 100%;
+      height: 1px;
+      background: var(--rule);
+      margin: 14px 0 22px;
+      position: relative;
+    }
+    .rule::after {
+      content: "";
+      position: absolute;
+      left: 0; top: -1px;
+      width: 36px; height: 3px;
+      background: var(--cool);
+    }
+    .rule.brass::after { background: var(--brass); }
+
+    .gold-line {
+      width: 42px; height: 1px;
+      background: var(--brass);
+      margin: 28px auto;
+      border: 0;
+    }
+
+    .lede { margin: 0 0 28px; }
+    .lede em { font-style: italic; color: color-mix(in srgb, var(--ink) 88%, var(--cool)); }
+
+    .meta {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 10px 18px;
+      margin: 28px 0;
+      align-items: baseline;
+    }
+    .meta dt { margin: 0; }
+    .meta dd { margin: 0; font-size: 1rem; }
+
+    .prompt {
+      background: var(--slate);
+      border-left: 3px solid var(--cool);
+      padding: 16px 18px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.55;
+      color: color-mix(in srgb, var(--ink) 88%, #000);
+      white-space: pre-line;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px 28px;
+    }
+    @media (max-width: 640px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .floors { display: none; }
+    }
+
+    .score-frame {
+      background: #F7F5F0;
+      padding: 8px;
+      border: 1px solid var(--rule);
+      margin: 18px 0 8px;
+    }
+    .score-frame img { width: 100%; display: block; }
+    .caption { text-align: center; margin: 8px 0 0; }
+
+    .stage {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .stage-n { font-size: 1.6rem; color: var(--cool); line-height: 1; }
+
+    .cascade { display: flex; flex-direction: column; gap: 8px; margin: 28px 0; }
+    .bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      font-size: 0.95rem;
+    }
+    .bar .sub { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: color-mix(in srgb, var(--ink) 55%, transparent); }
+    .bar.b1 { width: 100%; background: #243040; }
+    .bar.b2 { width: 92%; background: #2A3A4A; }
+    .bar.b3 { width: 84%; background: #355064; }
+    .bar.b4 { width: 76%; background: #4A5A48; }
+    .bar.b5 { width: 68%; background: #5C4A2E; }
+
+    .quote {
+      background: var(--slate);
+      padding: 16px 18px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 28px;
+    }
+
+    table.levels {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.95rem;
+    }
+    table.levels th {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+      text-align: left;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    table.levels td {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--rule);
+      vertical-align: top;
+    }
+    table.levels td:last-child { text-align: right; color: var(--muted); }
+    table.levels tr.final td { color: var(--brass); }
+
+    .colophon {
+      text-align: center;
+      padding: 64px 0 40px;
+    }
+    .colophon h1 { font-size: 2rem; margin-bottom: 8px; }
+    .motto {
+      margin-top: 28px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* —— Waveform Player —— */
+    .player {
+      background: var(--slate);
+      border: 1px solid var(--rule);
+      padding: 14px 16px 16px;
+      margin: 22px 0;
+    }
+    .player-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .player-title { font-size: 1.05rem; }
+    .player-sub { white-space: nowrap; }
+
+    .wave-wrap {
+      position: relative;
+      cursor: pointer;
+      margin: 8px 0 14px;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .wave-wrap img {
+      width: 100%;
+      display: block;
+      height: auto;
+      opacity: 0.92;
+    }
+    .wave-progress {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 0%;
+      background: color-mix(in srgb, var(--accent, var(--cool)) 18%, transparent);
+      border-right: 1px solid color-mix(in srgb, var(--accent, var(--cool)) 70%, #fff);
+      pointer-events: none;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .play-btn {
+      appearance: none;
+      border: 1px solid color-mix(in srgb, var(--accent, var(--cool)) 55%, var(--rule));
+      background: color-mix(in srgb, var(--accent, var(--cool)) 12%, var(--deep));
+      color: var(--ink);
+      width: 42px;
+      height: 42px;
+      border-radius: 0;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      transition: background 160ms ease, border-color 160ms ease;
+    }
+    .play-btn:hover {
+      background: color-mix(in srgb, var(--accent, var(--cool)) 22%, var(--deep));
+      border-color: var(--accent, var(--cool));
+    }
+    .play-btn svg { width: 16px; height: 16px; fill: currentColor; }
+    .play-btn .icon-pause { display: none; }
+    .player.is-playing .play-btn .icon-play { display: none; }
+    .player.is-playing .play-btn .icon-pause { display: block; }
+
+    .scrub {
+      flex: 1;
+      height: 3px;
+      appearance: none;
+      background: var(--rule);
+      outline: none;
+      cursor: pointer;
+      border-radius: 0;
+    }
+    .scrub::-webkit-slider-thumb {
+      appearance: none;
+      width: 12px; height: 12px;
+      background: var(--accent, var(--cool));
+      border: 0;
+      cursor: pointer;
+    }
+    .scrub::-moz-range-thumb {
+      width: 12px; height: 12px;
+      background: var(--accent, var(--cool));
+      border: 0;
+      cursor: pointer;
+    }
+
+    .player[data-accent="cool"] { --accent: var(--cool); }
+    .player[data-accent="brass"] { --accent: var(--brass); }
+
+    .now-playing {
+      position: sticky;
+      bottom: 0;
+      z-index: 20;
+      background: color-mix(in srgb, var(--deep) 88%, var(--slate));
+      border-top: 1px solid var(--rule);
+      backdrop-filter: blur(10px);
+      padding: 10px 20px;
+      display: none;
+      align-items: center;
+      gap: 14px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .now-playing.visible { display: flex; }
+    .now-playing strong { color: var(--ink); font-weight: 500; }
+    .now-playing .mini-btn {
+      margin-left: auto;
+      appearance: none;
+      border: 1px solid var(--rule);
+      background: transparent;
+      color: var(--ink);
+      padding: 6px 10px;
+      cursor: pointer;
+      font: inherit;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 10px;
+    }
+
+    section.etage { padding: 48px 0 12px; border-top: 1px solid transparent; }
+    .nav-listen {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 30;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: var(--slate);
+      border: 1px solid var(--rule);
+      color: var(--ink);
+      padding: 10px 12px;
+      text-decoration: none;
+    }
+    .nav-listen:hover { border-color: var(--cool); }
+  </style>
+</head>
+<body>
+  <a class="nav-listen" href="#hoeren">Hören</a>
+
+  <header class="cover">
+    <div class="floors" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <p class="eyebrow">Score · Sound · Ensemble</p>
+    <h1>Horn and Reed Fugue</h1>
+    <p class="subtitle">Vom Fugenthema zum Klangensemble</p>
+    <hr class="gold-line" />
+    <p class="label">Ein Album-Dokument · hörbar</p>
+    <p style="margin: 10px 0 0;">NilsP</p>
+    <p class="footer-meta" style="position:absolute;bottom:36px;">2026 · LilyPond · Suno V6</p>
+  </header>
+
+  <main class="page">
+    <section>
+      <h2>Stimmen folgen</h2>
+      <div class="rule"></div>
+      <p class="lede">Was entsteht, wenn ein Fugenthema zuerst symbolisch gesetzt wird — erkennbar, klar, nicht virtuos — und danach durch generative Transformation in ein Ensemble aus Horn und Rohrblatt wandert?</p>
+      <p class="lede"><em>Horn and Reed Fugue</em> beginnt als D-Moll-Fuge für Solo-Klavier in LilyPond. Über eine Suno-Zwischenstufe wird daraus das Album-Finale.</p>
+
+      <dl class="meta">
+        <dt class="label">Titel</dt><dd>Horn and Reed Fugue</dd>
+        <dt class="label">Score</dt><dd>Fugue in D Minor · Solo-Klavier</dd>
+        <dt class="label">Systemautor</dt><dd>NilsP</dd>
+        <dt class="label">Sound</dt><dd>Suno V6</dd>
+        <dt class="label">Album</dt><dd><a href="https://suno.com/album/08977bc9-f3ff-48ae-a48f-556f2e62fabf" target="_blank" rel="noopener">suno.com/album/…08977bc9</a></dd>
+        <dt class="label">Profil</dt><dd><a href="https://suno.com/@cwzjtpwwwy" target="_blank" rel="noopener">suno.com/@cwzjtpwwwy</a></dd>
+      </dl>
+
+      <h3>Der Impuls</h3>
+      <p>Bachscher Fugengeist, ohne Virtuositäts-Druck — Motiv erkennbar, mittlere Dichte, künstlerische Freiheit:</p>
+      <div class="prompt">Komponiere ein Pianosolo im Stil einer Bach Fuge.
+Das Fugenmotiv soll gut erkennbar sein.
+Nicht zu virtuos, aber auch nicht zu schlicht.
+Ansonsten jede künstlerische Freiheit.</div>
+      <p class="caption label" style="text-align:left;margin-top:14px;">Der Mensch bleibt Systemautor: Verfahren setzen · hören · auswählen · veröffentlichen.</p>
+    </section>
+
+    <section class="etage" id="score">
+      <h2>Eintritt 1 — Score</h2>
+      <div class="rule"></div>
+      <p>Drei Stimmen am Klavier. Thema in D-Moll: Quinte aufwärts, absteigende Wendung, Dominantschluss — dann Beantwortung, Zwischenspiel, Durchführung, Coda.</p>
+      <div class="grid-2" style="margin:22px 0;">
+        <dl class="meta" style="margin:0;">
+          <dt class="label">Werk</dt><dd>Fugue in D Minor</dd>
+          <dt class="label">Besetzung</dt><dd>Solo-Klavier</dd>
+          <dt class="label">Tonart</dt><dd>d-Moll</dd>
+          <dt class="label">Tempo</dt><dd>Moderato ♩=76</dd>
+        </dl>
+        <dl class="meta" style="margin:0;">
+          <dt class="label">Umfang</dt><dd>29 Takte · ca. 1:35</dd>
+          <dt class="label">Komponist</dt><dd>AI draft (test)</dd>
+          <dt class="label">Engine</dt><dd>LilyPond 2.26</dd>
+          <dt class="label">Form</dt><dd>Exposition + Durchführung</dd>
+        </dl>
+      </div>
+      <h3>Formskizze</h3>
+      <p class="label" style="letter-spacing:0.06em;text-transform:none;line-height:1.7;">T. 1–4 Thema (Alt) · T. 5–8 Beantwortung · T. 10–13 Bass-Eintritt · T. 14–17 Zwischenspiel · T. 18–21 G-Moll · T. 24–27 Schluss · T. 28–29 Coda</p>
+      <div class="score-frame">
+        <img src="assets/score-preview.png" alt="Notensatz Fugue in D Minor" />
+      </div>
+      <p class="caption label">Notensatz · LilyPond-Ausgabe</p>
+    </section>
+
+    <section class="etage" id="hoeren">
+      <h2>Eintritt 2 — Schnittstelle</h2>
+      <div class="rule"></div>
+      <p>Der Score ist Symbol. Für Suno braucht es Klang — aber noch kein Kunstwerk. LilyPond schreibt MIDI; FluidSynth und Soundfont erzeugen schlichtes Klavier-Audio; ffmpeg normalisiert.</p>
+
+      <div class="stage"><div class="stage-n">01</div><div><strong>LilyPond</strong><br /><span class="label" style="letter-spacing:0.06em;text-transform:none;">Partitur → PDF + MIDI. Thema und Kontrapunkt lesbar.</span></div></div>
+      <div class="stage"><div class="stage-n">02</div><div><strong>FluidSynth</strong><br /><span class="label" style="letter-spacing:0.06em;text-transform:none;">MIDI → WAV mit MuseScore General Soundfont. Nur Schnittstelle.</span></div></div>
+      <div class="stage"><div class="stage-n">03</div><div><strong>ffmpeg</strong><br /><span class="label" style="letter-spacing:0.06em;text-transform:none;">WAV → MP3, Loudnorm −16 LUFS. Suno-tauglich.</span></div></div>
+
+      <article class="player" data-accent="cool" data-src="audio/01-lilypond-render.mp3">
+        <div class="player-head">
+          <div class="player-title">Ausgangs-MP3</div>
+          <div class="player-sub label">ca. 1:35 · LilyPond-Render</div>
+        </div>
+        <div class="wave-wrap" data-seek>
+          <div class="wave-progress"></div>
+          <img src="assets/wave-01.png" alt="Waveform LilyPond-Render" />
+        </div>
+        <div class="controls">
+          <button class="play-btn" type="button" aria-label="Abspielen">
+            <svg class="icon-play" viewBox="0 0 16 16"><path d="M3 2l11 6-11 6V2z"/></svg>
+            <svg class="icon-pause" viewBox="0 0 16 16"><path d="M3 2h4v12H3zm6 0h4v12H9z"/></svg>
+          </button>
+          <input class="scrub" type="range" min="0" max="1000" value="0" aria-label="Position" />
+          <span class="player-time"><span class="t-cur">0:00</span> / <span class="t-dur">–:––</span></span>
+        </div>
+        <audio preload="metadata" src="audio/01-lilypond-render.mp3"></audio>
+      </article>
+      <p class="label">Diese Stufe ist bewusst nüchtern: sie trägt Motiv und Stimmführung weiter — nicht die Aura.</p>
+    </section>
+
+    <section class="etage">
+      <h2>Eintritt 3 — Zwischenstufe</h2>
+      <div class="rule"></div>
+      <p>Das Ausgangs-MP3 geht nach Suno. Daraus entsteht <em>fugue2</em> — noch nah am Fugenimpuls, schon generativ geatmet.</p>
+
+      <article class="player" data-accent="cool" data-src="audio/02-suno-zwischenstufe.mp3">
+        <div class="player-head">
+          <div class="player-title">fugue2 — Suno Zwischenstufe</div>
+          <div class="player-sub label">ca. 1:16 · Suno V6</div>
+        </div>
+        <div class="wave-wrap" data-seek>
+          <div class="wave-progress"></div>
+          <img src="assets/wave-02.png" alt="Waveform fugue2" />
+        </div>
+        <div class="controls">
+          <button class="play-btn" type="button" aria-label="Abspielen">
+            <svg class="icon-play" viewBox="0 0 16 16"><path d="M3 2l11 6-11 6V2z"/></svg>
+            <svg class="icon-pause" viewBox="0 0 16 16"><path d="M3 2h4v12H3zm6 0h4v12H9z"/></svg>
+          </button>
+          <input class="scrub" type="range" min="0" max="1000" value="0" aria-label="Position" />
+          <span class="player-time"><span class="t-cur">0:00</span> / <span class="t-dur">–:––</span></span>
+        </div>
+        <audio preload="metadata" src="audio/02-suno-zwischenstufe.mp3"></audio>
+      </article>
+
+      <h3>Was sich ändert</h3>
+      <div class="grid-2">
+        <div>
+          <p style="margin:0 0 6px;"><strong>Bleibt</strong></p>
+          <p class="label" style="letter-spacing:0.05em;text-transform:none;line-height:1.7;">Erkennbares Thema · kontrapunktische Erinnerung · d-Moll-Farbe · Moderato-Atem</p>
+        </div>
+        <div>
+          <p style="margin:0 0 6px;color:var(--brass);"><strong>Wandelt sich</strong></p>
+          <p class="label" style="letter-spacing:0.05em;text-transform:none;line-height:1.7;">Klangfarbe · zeitliche Proportion · Gestik · performative Dichte</p>
+        </div>
+      </div>
+      <div class="quote">SCORE bleibt Struktur. SOUND prüft, was die Struktur tragen kann — bevor das Ensemble greift.</div>
+    </section>
+
+    <section class="etage">
+      <h2>Eintritt 4 — Kaskade</h2>
+      <div class="rule brass"></div>
+      <p>Vom Score über die Zwischenstufe zur Auswahl: welche Transformation das Fugenthema als Horn- und Rohrblatt-Ensemble tragen darf.</p>
+      <div class="cascade">
+        <div class="bar b1"><span>Score · LilyPond-Fuge</span><span class="sub">symbolisch</span></div>
+        <div class="bar b2"><span>Render · Klavier-MP3</span><span class="sub">Schnittstelle</span></div>
+        <div class="bar b3"><span>Suno · fugue2</span><span class="sub">Zwischenstufe</span></div>
+        <div class="bar b5" style="width:70%"><span>Horn and Reed Fugue</span><span class="sub">Album-Final</span></div>
+      </div>
+      <p><strong>Prinzip</strong></p>
+      <p>Jede Stufe erbt Erinnerung an die vorige. Der Mensch entscheidet nicht die Noten der ersten Seite neu, sondern welche Stimme weiterleben darf.</p>
+    </section>
+
+    <section class="etage">
+      <h2>Eintritt 5 — Finale</h2>
+      <div class="rule brass"></div>
+      <p>Finale Form: <em>Horn and Reed Fugue</em>. Weit vom schlichten LilyPond-Render — und doch vom gleichen Fugenthema getragen.</p>
+
+      <article class="player" data-accent="brass" data-src="audio/03-horn-and-reed-final.mp3">
+        <div class="player-head">
+          <div class="player-title">Horn and Reed Fugue — Final</div>
+          <div class="player-sub label">ca. 3:10 · Album-Track</div>
+        </div>
+        <div class="wave-wrap" data-seek>
+          <div class="wave-progress"></div>
+          <img src="assets/wave-03.png" alt="Waveform Horn and Reed Final" />
+        </div>
+        <div class="controls">
+          <button class="play-btn" type="button" aria-label="Abspielen">
+            <svg class="icon-play" viewBox="0 0 16 16"><path d="M3 2l11 6-11 6V2z"/></svg>
+            <svg class="icon-pause" viewBox="0 0 16 16"><path d="M3 2h4v12H3zm6 0h4v12H9z"/></svg>
+          </button>
+          <input class="scrub" type="range" min="0" max="1000" value="0" aria-label="Position" />
+          <span class="player-time"><span class="t-cur">0:00</span> / <span class="t-dur">–:––</span></span>
+        </div>
+        <audio preload="metadata" src="audio/03-horn-and-reed-final.mp3"></audio>
+      </article>
+
+      <dl class="meta">
+        <dt class="label">Credits</dt><dd>NilsP</dd>
+        <dt class="label">Profil</dt><dd><a href="https://suno.com/@cwzjtpwwwy" target="_blank" rel="noopener">@cwzjtpwwwy</a></dd>
+        <dt class="label">Album</dt><dd><a href="https://suno.com/album/08977bc9-f3ff-48ae-a48f-556f2e62fabf" target="_blank" rel="noopener">Horn and Reed Fugue auf Suno</a></dd>
+        <dt class="label">Pfad</dt><dd>Score → Sound → Ensemble</dd>
+      </dl>
+
+      <h3>Drei Hörstufen</h3>
+      <table class="levels">
+        <thead>
+          <tr><th>Stufe</th><th>Rolle</th><th>Dauer</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Render</td><td>Schnittstelle · Klavier-Fuge</td><td>1:35</td></tr>
+          <tr><td>fugue2</td><td>Suno-Zwischenstufe</td><td>1:16</td></tr>
+          <tr class="final"><td>Final</td><td>Horn and Reed Fugue</td><td>3:10</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="etage">
+      <h2>Impressum der Stimmen</h2>
+      <div class="rule brass"></div>
+      <p>Dieses Dokument hält den Workflow fest — nicht jede verworfene Version. Der Wert liegt in der Kette: erkennbares Thema, gültiger Score, hörbare Schnittstelle, generative Transformation, menschliche Auswahl.</p>
+      <dl class="meta">
+        <dt class="label">Werk</dt><dd>Horn and Reed Fugue</dd>
+        <dt class="label">Score-Titel</dt><dd>Fugue in D Minor</dd>
+        <dt class="label">Systemautor</dt><dd>NilsP</dd>
+        <dt class="label">Score-Engine</dt><dd>LilyPond 2.26 · FluidSynth · ffmpeg</dd>
+        <dt class="label">Sound-Engine</dt><dd>Suno V6</dd>
+        <dt class="label">Profil</dt><dd><a href="https://suno.com/@cwzjtpwwwy" target="_blank" rel="noopener">suno.com/@cwzjtpwwwy</a></dd>
+        <dt class="label">Album</dt><dd><a href="https://suno.com/album/08977bc9-f3ff-48ae-a48f-556f2e62fabf" target="_blank" rel="noopener">suno.com/album/08977bc9-…</a></dd>
+        <dt class="label">Druck-PDF</dt><dd><a href="horn-and-reed-fugue.pdf">horn-and-reed-fugue.pdf</a></dd>
+      </dl>
+
+      <div class="colophon">
+        <hr class="gold-line" />
+        <h1>Horn and Reed Fugue</h1>
+        <p class="label">NilsP · 2026</p>
+        <p class="motto">Das Thema bleibt. Die Stimmen wandeln sich.</p>
+      </div>
+    </section>
+  </main>
+
+  <div class="now-playing" id="nowPlaying" aria-live="polite">
+    <span>Jetzt · <strong id="nowTitle">—</strong></span>
+    <button class="mini-btn" type="button" id="nowToggle">Pause</button>
+  </div>
+
+  <script>
+    (() => {
+      const players = [...document.querySelectorAll(".player")];
+      const nowBar = document.getElementById("nowPlaying");
+      const nowTitle = document.getElementById("nowTitle");
+      const nowToggle = document.getElementById("nowToggle");
+      let active = null;
+
+      const fmt = (s) => {
+        if (!Number.isFinite(s)) return "–:––";
+        const m = Math.floor(s / 60);
+        const sec = Math.floor(s % 60);
+        return `${m}:${String(sec).padStart(2, "0")}`;
+      };
+
+      const pauseOthers = (except) => {
+        players.forEach((p) => {
+          if (p === except) return;
+          const a = p.querySelector("audio");
+          a.pause();
+          p.classList.remove("is-playing");
+        });
+      };
+
+      const syncNow = () => {
+        if (!active) {
+          nowBar.classList.remove("visible");
+          return;
+        }
+        const title = active.querySelector(".player-title")?.textContent?.trim() || "Track";
+        const audio = active.querySelector("audio");
+        nowTitle.textContent = title;
+        nowBar.classList.add("visible");
+        nowToggle.textContent = audio.paused ? "Play" : "Pause";
+      };
+
+      players.forEach((player) => {
+        const audio = player.querySelector("audio");
+        const btn = player.querySelector(".play-btn");
+        const scrub = player.querySelector(".scrub");
+        const wave = player.querySelector("[data-seek]");
+        const progress = player.querySelector(".wave-progress");
+        const tCur = player.querySelector(".t-cur");
+        const tDur = player.querySelector(".t-dur");
+
+        const update = () => {
+          const d = audio.duration || 0;
+          const c = audio.currentTime || 0;
+          const ratio = d ? c / d : 0;
+          scrub.value = String(Math.round(ratio * 1000));
+          progress.style.width = `${ratio * 100}%`;
+          tCur.textContent = fmt(c);
+          if (Number.isFinite(d)) tDur.textContent = fmt(d);
+        };
+
+        audio.addEventListener("loadedmetadata", update);
+        audio.addEventListener("timeupdate", update);
+        audio.addEventListener("ended", () => {
+          player.classList.remove("is-playing");
+          if (active === player) syncNow();
+        });
+
+        btn.addEventListener("click", async () => {
+          if (audio.paused) {
+            pauseOthers(player);
+            active = player;
+            try { await audio.play(); } catch (_) {}
+            player.classList.add("is-playing");
+          } else {
+            audio.pause();
+            player.classList.remove("is-playing");
+          }
+          syncNow();
+        });
+
+        const seekTo = (ratio) => {
+          if (!Number.isFinite(audio.duration)) return;
+          audio.currentTime = Math.min(1, Math.max(0, ratio)) * audio.duration;
+          update();
+        };
+
+        scrub.addEventListener("input", () => {
+          seekTo(Number(scrub.value) / 1000);
+        });
+
+        wave.addEventListener("click", (e) => {
+          const rect = wave.getBoundingClientRect();
+          seekTo((e.clientX - rect.left) / rect.width);
+          if (audio.paused) btn.click();
+        });
+      });
+
+      nowToggle.addEventListener("click", () => {
+        if (!active) return;
+        active.querySelector(".play-btn").click();
+      });
+    })();
+  </script>
+</body>
+</html>
