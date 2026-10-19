@@ -1,4 +1,4 @@
-// Horn and Reed Fugue — Score → Sound → Ensemble
+// Horn and Reed Fugue — Score → Sound → Bigband
 #set document(
   title: "Horn and Reed Fugue — Score → Sound",
   author: "NilsP",
@@ -94,11 +94,11 @@
   ]
   #v(48mm)
   #align(center)[
-    #sans[SCORE  ·  SOUND  ·  ENSEMBLE]
+    #sans[SCORE  ·  SOUND  ·  BIGBAND]
     #v(10mm)
     #text(size: 34pt, tracking: 0.5pt)[Horn and Reed Fugue]
     #v(6mm)
-    #text(size: 13pt, fill: muted)[Vom Fugenthema zum Klangensemble]
+    #text(size: 13pt, fill: muted)[Vom Fugenthema zum Bigband-Arrangement]
     #v(14mm)
     #line(length: 42mm, stroke: 0.6pt + reed)
     #v(14mm)
@@ -117,7 +117,7 @@
 
 #floor-rule()
 
-Was entsteht, wenn ein Fugenthema zuerst symbolisch gesetzt wird — erkennbar, klar, nicht virtuos — und danach durch generative Transformation in ein Ensemble aus Horn und Rohrblatt wandert?
+Was entsteht, wenn ein Fugenthema zuerst symbolisch gesetzt wird — erkennbar, klar, nicht virtuos — und danach durch generative Transformation in ein Bigband-Arrangement wandert?
 
 _Horn and Reed Fugue_ beginnt als D-Moll-Fuge für Solo-Klavier in LilyPond. Über eine Suno-Zwischenstufe wird daraus das Album-Finale: denselben kontrapunktischen Impuls, neu artikuliert.
 
@@ -227,7 +227,7 @@ Das Ausgangs-MP3 geht nach Suno. Daraus entsteht eine Zwischenfassung — noch n
 
 #v(14pt)
 #block(width: 100%, inset: 12pt, fill: slate)[
-  #sans[SCORE bleibt Struktur. SOUND prüft, was die Struktur tragen kann — bevor das Ensemble greift.]
+  #sans[SCORE bleibt Struktur. SOUND prüft, was die Struktur tragen kann — bevor das Bigband-Arrangement greift.]
 ]
 
 #pagebreak()
@@ -235,7 +235,7 @@ Das Ausgangs-MP3 geht nach Suno. Daraus entsteht eine Zwischenfassung — noch n
 
 #floor-rule(accent: reed)
 
-Vom Score über die Zwischenstufe zur Auswahl: welche Transformation das Fugenthema als Horn- und Rohrblatt-Ensemble tragen darf.
+Vom Score über die Zwischenstufe zur Auswahl: welche Transformation das Fugenthema als Bigband-Arrangement tragen darf.
 
 #v(10pt)
 #let bar(label, sub, fill, w) = {
@@ -272,7 +272,7 @@ Finale Form: *Horn and Reed Fugue*. Weit vom schlichten LilyPond-Render — und 
    #meta-row("Profil", link(suno-profile)[\@cwzjtpwwwy])],
   [#meta-row("Album", link(suno-album)[Auf Suno öffnen])
    #v(3pt)
-   #meta-row("Pfad", [Score → Sound → Ensemble])])
+   #meta-row("Pfad", [Score → Sound → Bigband])])
 
 #v(14pt)
 == Drei Hörstufen
